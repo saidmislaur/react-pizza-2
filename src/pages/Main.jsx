@@ -8,22 +8,26 @@ import '../scss/app.scss';
 
 export const Main = () => {
   const [items, setItems] = React.useState([])
+  const [categoryId, setCategoryId] = React.useState(0);
+  const [sortActive, setSortActive] = React.useState(0)
   const [isLoading, setIsLoading] = React.useState(true)
 
   React.useEffect(() => {
-    fetch('https://6294acdda7203b3ed06e7c05.mockapi.io/items')
+    setIsLoading(true)
+    fetch(categoryId === 0 ? 'https://6294acdda7203b3ed06e7c05.mockapi.io/items' : 
+    'https://6294acdda7203b3ed06e7c05.mockapi.io/items?category=' + categoryId)
       .then(res => res.json())
       .then((arr) => {
         setItems(arr);
         setIsLoading(false)
     })
-  }, [])
+  }, [categoryId])
 
   return (
     <div>
       <div className="content__top">
-        <Categories />
-        <Sort />
+        <Categories categoryId={categoryId} setCategoryId={setCategoryId}/>
+        <Sort sortActive={sortActive} setSortActive={setSortActive}/>
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">

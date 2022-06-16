@@ -1,17 +1,17 @@
 import React, {useState} from 'react'
 
-export const Sort = () => {
+export const Sort = ({sortActive, setSortActive}) => {
   const lists = ["популярности", "цене", "алфавиту"]
 
   const [visiable, setVisiable] = useState(false)
-  const [active, setActive] = useState(0)
+  
 
   const SortList = (i) => {
-    setActive(i)
+    setSortActive(i)
     setVisiable(!visiable)
   }
 
-  const sort = lists[active];
+  const sort = lists[sortActive];
 
   return (
     <div className="sort">
@@ -37,7 +37,7 @@ export const Sort = () => {
               <li 
                 key={i}
                 onClick={() => SortList(i)}
-                className={active === i ? "active" : ''}>{list}</li>
+                className={sortActive === i ? "active" : ''}>{list}</li>
             ))}
           </ul>
         </div>
