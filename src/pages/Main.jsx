@@ -6,7 +6,7 @@ import { Sort } from '../components/sort';
 import '../scss/app.scss';
 
 
-export const Main = () => {
+export const Main = ({searchValue}) => {
   const [items, setItems] = React.useState([])
   const [categoryId, setCategoryId] = React.useState(0);
   const [sortActive, setSortActive] = React.useState(0)
@@ -14,14 +14,21 @@ export const Main = () => {
 
   React.useEffect(() => {
     setIsLoading(true)
-    fetch(categoryId === 0 ? 'https://6294acdda7203b3ed06e7c05.mockapi.io/items' : 
-    'https://6294acdda7203b3ed06e7c05.mockapi.io/items?category=' + categoryId)
+    const category = categoryId > 0 ? `category=${categoryId}`: '';
+    const search = searchValue ? `&search${searchValue}`: ''; 
+
+    fetch(`https://6294acdda7203b3ed06e7c05.mockapi.io/items?${category}${search}`)
       .then(res => res.json())
       .then((arr) => {
         setItems(arr);
         setIsLoading(false)
     })
-  }, [categoryId])
+  }, [categoryId, searchValue])
+
+  const pizzas = items.filter(
+    arr => arr.title.toLowerCase().includes(searchValue.toLowerCase()) 
+  ).map((item, index) => ( <Cart key={item.id} {...item} index={index}/>));
+  const sceletons = [...new Array(4)].map((_, index) => <Sceleton key={index} />) 
 
   return (
     <div>
@@ -32,8 +39,8 @@ export const Main = () => {
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
         {isLoading 
-          ? [...new Array(4)].map((_, index) => <Sceleton key={index} />)
-          : items.map((item, index) => ( <Cart key={item.id} {...item} index={index}/>))
+          ? sceletons
+          : pizzas
         }
       </div>
     </div>
