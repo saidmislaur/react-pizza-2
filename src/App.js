@@ -1,9 +1,12 @@
 import React from 'react'
+// import { useSelector, useDispatch } from 'react-redux';
 import { Routes,Route } from "react-router-dom";
 import {Header} from './components/header'
 import { Cart } from './pages/Cart';
 import { Main } from './pages/Main'
 import NotFound from './pages/NotFound';
+
+
 
 
 export const SearchContext = React.createContext()
